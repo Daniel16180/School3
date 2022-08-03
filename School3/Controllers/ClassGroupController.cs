@@ -14,44 +14,56 @@ namespace School3.Controllers
     [ApiController]
     public class ClassGroupController : ControllerBase
     {
-        [Microsoft.AspNetCore.Mvc.HttpGet]
-        public IActionResult GetAllClassGroups()
+        [HttpGet]
+        public IEnumerable<ClassGroupDetailDto> GetAllClassGroups()
         {
             ClassGroupService classGroupService = new ClassGroupService();
-            return Ok(classGroupService.ReadAll());
+            return classGroupService.ReadAll();
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public IActionResult SetClassGroup(ClassGroupDetailDto classGroupDetailDto)
+        [HttpPost]
+        public string SetClassGroup(ClassGroupDetailDto classGroupDetailDto)
         {
             string message = "Successful Registration";
 
             ClassGroupService classGroupService = new ClassGroupService();
             classGroupService.Create(classGroupDetailDto);
 
-            return Ok(message);
+            return message;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPatch]
-        public IActionResult UpdateClassGroup(ClassGroupDetailDto classGroupDetailDto)
+        [HttpPatch]
+        public string UpdateClassGroup(ClassGroupDetailDto classGroupDetailDto)
         {
             string message = "Successful Update";
 
             ClassGroupService classGroupService = new ClassGroupService();
             classGroupService.Update(classGroupDetailDto);
 
-            return Ok(message);
+            return message;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpDelete]
-        public IActionResult DeleteClassGroup(int id)
+        [HttpDelete]
+        public string DeleteClassGroup(int id)
         {
             string message = "Successful Delection";
 
             ClassGroupService classGroupService = new ClassGroupService();
             classGroupService.Delete(id);
 
-            return Ok(message);
+            return message;
+        }
+
+        [Route("merge")]
+        [HttpPatch]
+        public string MergeClassGroup(MergedGroupsDto mergedGroupsDto)
+        {
+            string message = "Successfull merged. Please reassign unassigned teachers.";
+
+            ClassGroupService classGroupService = new ClassGroupService();
+            classGroupService.Merge(mergedGroupsDto);
+
+            return message;
         }
     }
 }
