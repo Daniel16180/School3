@@ -52,7 +52,7 @@ namespace School3.Controllers
             return Ok(message);
         }
 
-        [Route("/director")]
+        [Route("director")]
         [HttpGet]
         public IActionResult GetDirector()
         {
