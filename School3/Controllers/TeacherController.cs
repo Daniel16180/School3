@@ -20,44 +20,64 @@ namespace School3.Controllers
         }
 
         [HttpPost]
-        public IActionResult SetTeacher(Teacher teacher)
+        public string SetTeacher(Teacher teacher)
         {
             string message = "Successful Registration";
 
             TeacherService teacherService = new TeacherService();
             teacherService.Create(teacher);
 
-            return Ok(message);
+            return message;
         }
 
         [HttpPatch]
-        public IActionResult UpdateTeacher(TeacherShortDto teacherUpdateDto)
+        public string UpdateTeacher(TeacherShortDto teacherUpdateDto)
         {
             string message = "Successful Update";
 
             TeacherService teacherService = new TeacherService();
             teacherService.Update(teacherUpdateDto);
 
-            return Ok(message);
+            return message;
         }
 
         [HttpDelete]
-        public IActionResult DeleteTeacher(int id)
+        public string DeleteTeacher(int id)
         {
             string message = "Successful Delection";
 
             TeacherService teacherService = new TeacherService();
             teacherService.Delete(id);
 
-            return Ok(message);
+            return message;
         }
 
         [Route("director")]
         [HttpGet]
-        public IActionResult GetDirector()
+        public PersonDto GetDirector()
         {
             TeacherService teacherService = new TeacherService();
-            return Ok(teacherService.ViewDirector());
+            return teacherService.ViewDirector();
+        }
+
+        [Route("directorElection")]
+        [HttpGet]
+        public string UpdateDirector()
+        {
+            string message = "Director elected";
+            TeacherService teacherService = new TeacherService();
+            teacherService.ElectDirector();
+            return message;
+        }
+
+        [Route("assign")]
+        [HttpPost]
+        public string AssignTeacherToClassGroup(AssignToClassDto assignToClassDto)
+        {
+            string message = "Teacher asigned";
+            TeacherService teacherService = new TeacherService();
+            teacherService.AssignToClass(assignToClassDto);
+            return message;
         }
     }
 }

@@ -20,8 +20,8 @@ namespace School3.Service
         {
             TeacherRepository teacherRepository = new TeacherRepository();
             TeacherDetailDto teacherDetailDto = new TeacherDetailDto();
-            List<TeacherDetailDto> teacherDetailDtos = new List<TeacherDetailDto> ();
-            
+            List<TeacherDetailDto> teacherDetailDtos = new List<TeacherDetailDto>();
+
             foreach (var teacher in teacherRepository.GetTeachers())
             {
                 teacherDetailDto.Id = teacher.Id;
@@ -38,14 +38,14 @@ namespace School3.Service
         }
         public void Update(TeacherShortDto teacherUpdateDto)
         {
-                TeacherRepository teacherRepository = new TeacherRepository();
-                teacherRepository.UpdateTeacher(teacherUpdateDto);
+            TeacherRepository teacherRepository = new TeacherRepository();
+            teacherRepository.UpdateTeacher(teacherUpdateDto);
         }
 
         public void Delete(int teacherId)
         {
-                TeacherRepository teacherRepository = new TeacherRepository();
-                teacherRepository.DeleteTeacher(teacherId);          
+            TeacherRepository teacherRepository = new TeacherRepository();
+            teacherRepository.DeleteTeacher(teacherId);
         }
 
         public PersonDto ViewDirector()
@@ -61,69 +61,36 @@ namespace School3.Service
             return personDto;
         }
 
-        public void ElectDirector()
+        public void ElectDirector() //change. Problem -> Some IDs missing. Use Name and Surname in the Query.
         {
-            Console.Clear();
             var votes = new List<int>();
-            TeacherRepository query = new TeacherRepository();
-            foreach (var teacher in query.GetTeachers())
+            TeacherRepository teacherRepository = new TeacherRepository();
+            foreach (var teacher in teacherRepository.GetTeachers())
             {
-                Console.WriteLine(teacher.Name);
                 Random randomVotes = new Random();
                 int randomNumber = randomVotes.Next(50, 500);
-                Console.WriteLine(randomNumber + "votes.");
                 votes.Add(randomNumber);
-
-
             }
 
-            Console.Clear();
             int[] positions = votes.ToArray();
-            Console.WriteLine("The winner has " + positions.Max() + "votes!");
             int winnerPosition = Convert.ToInt32(Array.IndexOf(positions, positions.Max()));
-            int realWinnerPosition = winnerPosition++;
-            Console.WriteLine("The candidate number " + winnerPosition + " won.");
+            int realPosition = winnerPosition++;
 
-
-            query.unsetDirector();
-            query.setDirector(winnerPosition);
+            teacherRepository.unsetDirector();
+            teacherRepository.setDirector(realPosition);
         }
 
-        public void AssignToClass()
+        public void AssignToClass(AssignToClassDto assignToClassDto) //name+surname+existingClassGroupId
         {
-            int exitMenu = 0;
-            Console.Clear();
-            while (exitMenu == 0)
+            TeacherRepository teacherRepository = new TeacherRepository();
+            foreach (var teacher in teacherRepository.GetTeachers())
             {
-                Console.WriteLine("Write the teacher´s name or type 1 to go back to the Main Menu.");
-                string name = Console.ReadLine();
-                Console.Clear();
-                if (name == "1")
+                if (teacher.Name == assignToClassDto.TeacherName && teacher.Surname == assignToClassDto.TeacherSurname)
                 {
-                    exitMenu = 1;
+                    int teacherId = teacher.Id;
+                    teacherRepository.SetAssignment(assignToClassDto.ClassGroupId, teacherId);
                 }
-                else
-                {
-                    Console.WriteLine("Enter the surname");
-                    string surname = Console.ReadLine();
-                    Console.Clear();
 
-                    Console.WriteLine("Select the classgroup id to assign");
-                    int classGroup = Convert.ToInt32(Console.ReadLine());
-
-
-                    TeacherRepository teacherRepository = new TeacherRepository();
-                    foreach (var teacher in teacherRepository.GetTeachers())
-                    {
-                        if (teacher.Name == name && teacher.Surname == surname)
-                        {
-                            int idTeacher = teacher.Id;
-                            teacherRepository.SetAssignment(classGroup, idTeacher);
-                            Console.WriteLine("Done!");
-                        }
-
-                    }
-                }
             }
         }
     }
