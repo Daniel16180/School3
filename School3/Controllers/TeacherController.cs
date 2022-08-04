@@ -4,6 +4,7 @@ using School3.Models;
 using School3.Service;
 using School3.Models.Dto;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace School3.Controllers
 {
@@ -11,11 +12,19 @@ namespace School3.Controllers
     [ApiController]
     public class TeacherController : ControllerBase
     {
+        private readonly IMapper _mapper;
+
+        public TeacherController(IMapper mapper)
+        {
+            //UserRepository = new UserRepository();
+            this._mapper = mapper;
+        }
+
         [Route("all")]
         [HttpGet]
         public IEnumerable<TeacherDetailDto> GetAllTeachers()
         {
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             return teacherService.ReadAll();
         }
 
@@ -24,7 +33,7 @@ namespace School3.Controllers
         {
             string message = "Successful Registration";
 
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             teacherService.Create(teacher);
 
             return message;
@@ -35,7 +44,7 @@ namespace School3.Controllers
         {
             string message = "Successful Update";
 
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             teacherService.Update(teacherUpdateDto);
 
             return message;
@@ -46,7 +55,7 @@ namespace School3.Controllers
         {
             string message = "Successful Delection";
 
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             teacherService.Delete(id);
 
             return message;
@@ -56,7 +65,7 @@ namespace School3.Controllers
         [HttpGet]
         public PersonDto GetDirector()
         {
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             return teacherService.ViewDirector();
         }
 
@@ -65,7 +74,7 @@ namespace School3.Controllers
         public string UpdateDirector()
         {
             string message = "Director elected";
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             teacherService.ElectDirector();
             return message;
         }
@@ -75,7 +84,7 @@ namespace School3.Controllers
         public string AssignTeacherToClassGroup(AssignToClassDto assignToClassDto)
         {
             string message = "Teacher asigned";
-            TeacherService teacherService = new TeacherService();
+            TeacherService teacherService = new TeacherService(_mapper);
             teacherService.AssignToClass(assignToClassDto);
             return message;
         }

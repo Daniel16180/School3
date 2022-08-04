@@ -1,3 +1,6 @@
+
+using AutoMapper;
+//using FluentAssertions.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +29,20 @@ namespace School3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //AUTOMAPPER CONFIGURATION. 
+            //Be CAREFUL not to write it in the wrong method Configure()
+            //R. uses cfg for configuration. DAL (Data Access Layer) instead of just Models.
+            var mapperConfig = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new MappingProfile());
+
+            });
+
+            //  var mapper = mapperConfig.CreateMapper();
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +63,10 @@ namespace School3
             {
                 endpoints.MapControllers();
             });
+
+             
         }
+
+
     }
 }

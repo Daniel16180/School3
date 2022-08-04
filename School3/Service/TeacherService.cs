@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using School3.Models;
 using School3.Models.Dto;
 using School3.Repository;
@@ -10,6 +11,14 @@ namespace School3.Service
 {
     public class TeacherService
     {
+        private readonly IMapper _mapper;
+
+        public TeacherService(IMapper mapper)
+        {
+             TeacherRepository teacherRepository = new TeacherRepository();
+            _mapper = mapper;
+        }
+
         public void Create(Teacher teacher)
         {
             TeacherRepository teacherRepository = new TeacherRepository();
@@ -21,20 +30,12 @@ namespace School3.Service
             TeacherRepository teacherRepository = new TeacherRepository();
             List<TeacherDetailDto> teacherDetailDtos = new List<TeacherDetailDto>();
 
-            foreach (var teacher in teacherRepository.GetTeachers())
-            {
-                TeacherDetailDto teacherDetailDto = new TeacherDetailDto();
-                teacherDetailDto.Id = teacher.Id;
-                teacherDetailDto.Name = teacher.Name;
-                teacherDetailDto.Surname = teacher.Surname;
-                teacherDetailDto.Salary = teacher.Salary;
-                teacherDetailDto.Experience = teacher.Experience;
-                teacherDetailDto.Director = teacher.Director;
+            var teachers = teacherRepository.GetTeachers();
 
-                teacherDetailDtos.Add(teacherDetailDto);
-            }
+            //conversion from Teacher into TeacherDetailDto with AutoMapper
+            var resultDtos = this._mapper.Map<IEnumerable<TeacherDetailDto>>(teachers);
 
-            return teacherDetailDtos;
+            return resultDtos;
         }
         public void Update(TeacherShortDto teacherUpdateDto)
         {
