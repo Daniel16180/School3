@@ -64,14 +64,14 @@ namespace School3.Repository
             }
         }
 
-        public IReadOnlyList<Person2Dto> MyMates(int classId)
+        public IReadOnlyList<Person2Dto> MyMates(int classGroupId)
         {
             using (IDbConnection connection = new SqlConnection(connectionStr))
             {
                 connection.Open();
 
 
-                var personDTOList = connection.Query<Person2Dto>(@"SELECT id as Id, first_name as Name, last_name as Surname FROM dbo.Pupil WHERE id_classgroup = " + classId);
+                var personDTOList = connection.Query<Person2Dto>(@"SELECT id as Id, first_name as Name, last_name as Surname FROM dbo.Pupil WHERE id_classgroup = " + classGroupId);
                 return personDTOList.ToList().AsReadOnly();
             }
         }

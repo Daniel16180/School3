@@ -62,47 +62,33 @@ namespace School3.Service
                 pupilRepository.DeletePupil(pupilId);
         }
 
-        public void FindMates()
+        public IEnumerable<Person2Dto> FindMates(PupilFindMatesDto findMatesDto)
         {
-            Console.Clear();
-            Console.WriteLine("Select your classgroup id: ");
-
-
-            int classId = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Insert your own id: ");
-            int ownId = Convert.ToInt32(Console.ReadLine());
-
-            Console.Clear();
-            Console.WriteLine("Your classmates are: ");
 
             PupilRepository pupilRepository = new PupilRepository();
-            foreach (var Person2DTO in pupilRepository.MyMates(classId))
+            List<Person2Dto> matesList = new List<Person2Dto>();
+            foreach (var mate in pupilRepository.MyMates(findMatesDto.ClassGroupId))
             {
-                if (Person2DTO.Id != ownId)
+                if (mate.Id != findMatesDto.PupilId)
                 {
-                    Console.WriteLine(Person2DTO.Name + " " + Person2DTO.Surname);
-
+                    matesList.Add(mate);
                 }
-
             }
 
+            return matesList;
         }
 
-        public void FindMyTeachers()
+        public IEnumerable<PersonDto> FindMyTeachers(int pupilId) 
         {
-            Console.WriteLine("Write your student number (id)");
-            int studentNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.Clear();
-            Console.WriteLine("Your teachers are: ");
+            
             TeacherRepository teacherRepository = new TeacherRepository();
-            foreach (var PersonDTO in teacherRepository.MyTeachers(studentNumber))
+            List<PersonDto> myTeachersList = new List<PersonDto>();
+            foreach (var teacher in teacherRepository.MyTeachers(pupilId))
             {
-                Console.WriteLine(PersonDTO.Name + " " + PersonDTO.Surname);
-
-
+                myTeachersList.Add(teacher);
             }
 
+            return myTeachersList;
         }
     }
 }

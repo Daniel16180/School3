@@ -15,45 +15,68 @@ namespace School3.Controllers
     public class PupilController : ControllerBase
     {
         
-            [Microsoft.AspNetCore.Mvc.HttpGet]
-            public IActionResult GetAllPupilss()
+            [HttpGet]
+            public IEnumerable<PupilDetailDto> GetAllPupilss()
             {
                 PupilService pupilService = new PupilService();
-                return Ok(pupilService.ReadAll());
+                return pupilService.ReadAll();
             }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public IActionResult SetPupil(Pupil pupil)
+        [HttpPost]
+        public string SetPupil(Pupil pupil)
         {
             string message = "Successful Registration";
 
             PupilService pupilService = new PupilService();
             pupilService.Create(pupil);
 
-            return Ok(message);
+            return message;
         }
 
-        [Microsoft.AspNetCore.Mvc.HttpPatch]
-        public IActionResult UpdatePupil(PupilShortDto pupilShortDto)
+        [HttpPatch]
+        public string UpdatePupil(PupilShortDto pupilShortDto)
         {
             string message = "Successful Update";
 
             PupilService pupilService = new PupilService();
             pupilService.Update(pupilShortDto);
 
-            return Ok(message);
+            return message;
         }
 
 
-        [Microsoft.AspNetCore.Mvc.HttpDelete]
-        public IActionResult DeletePupil(int id)
+        [HttpDelete]
+        public string DeletePupil(int id)
         {
             string message = "Successful Delection";
 
             PupilService pupilService = new PupilService();
             pupilService.Delete(id);
 
-            return Ok(message);
+            return message;
         }
+
+        [Route("myMates")]
+        [HttpPatch]
+        public IEnumerable<Person2Dto> FindMates(PupilFindMatesDto findMatesDto)
+        {
+
+            PupilService pupilService = new PupilService(); 
+
+            return pupilService.FindMates(findMatesDto);
+        }
+
+        [Route("myTeachers")]
+        [HttpGet]
+        public IEnumerable<PersonDto> FindMyTeachers(int pupilId)
+        {
+
+            PupilService pupilService = new PupilService();
+
+            return pupilService.FindMyTeachers(pupilId);
+        }
+
+
+
     }
 }
