@@ -16,14 +16,15 @@ namespace School3.Service
             classGroupRepository.SetClassgroup(classGroupDetailDto);       
         }
 
-        public IEnumerable<ClassGroupDetailDto> ReadAll() //change
+        public IEnumerable<ClassGroupDetailDto> ReadAll()
         {
             ClassGroupRepository classGroupRepository = new ClassGroupRepository();
-            ClassGroupDetailDto classGroupDetailDto = new ClassGroupDetailDto();
+            
             List<ClassGroupDetailDto> classGroupDetailDtos = new List<ClassGroupDetailDto>();
 
             foreach (var classGroup in classGroupRepository.GetClassgroups())
             {
+                ClassGroupDetailDto classGroupDetailDto = new ClassGroupDetailDto();
                 classGroupDetailDto.Id = classGroup.Id;
                 classGroupDetailDto.Year = classGroup.Year;
                 classGroupDetailDto.Letter = classGroup.Letter;

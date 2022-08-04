@@ -16,14 +16,14 @@ namespace School3.Service
             teacherRepository.SetTeacher(teacher);
         }
 
-        public IEnumerable<TeacherDetailDto> ReadAll() //change
+        public IEnumerable<TeacherDetailDto> ReadAll()
         {
             TeacherRepository teacherRepository = new TeacherRepository();
-            TeacherDetailDto teacherDetailDto = new TeacherDetailDto();
             List<TeacherDetailDto> teacherDetailDtos = new List<TeacherDetailDto>();
 
             foreach (var teacher in teacherRepository.GetTeachers())
             {
+                TeacherDetailDto teacherDetailDto = new TeacherDetailDto();
                 teacherDetailDto.Id = teacher.Id;
                 teacherDetailDto.Name = teacher.Name;
                 teacherDetailDto.Surname = teacher.Surname;

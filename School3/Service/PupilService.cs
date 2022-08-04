@@ -22,21 +22,11 @@ namespace School3.Service
         public IEnumerable<PupilDetailDto> ReadAll()
         {
             PupilRepository pupilRepository = new PupilRepository();
-            PupilDetailDto pupilDetailDto = new PupilDetailDto();
             List<PupilDetailDto> pupilDetailDtos = new List<PupilDetailDto>();
 
-
-
-            //pupilDetailDtos = (from p in pupilRepository
-            //                   select new PupilDetailDto()
-            //                   {
-            //                       Id = pupilDetailDto.Id,
-            //                       Name = pupilDetailDto.Name
-            //                   }).ToList();
-
-            foreach (var pupil in pupilRepository.GetPupils()) //change
+            foreach (var pupil in pupilRepository.GetPupils()) 
             {
-
+                PupilDetailDto pupilDetailDto = new PupilDetailDto();
                 pupilDetailDto.Id = pupil.Id;
                 pupilDetailDto.Name = pupil.Name;
                 pupilDetailDto.Surname = pupil.Surname;
