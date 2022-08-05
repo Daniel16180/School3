@@ -7,17 +7,27 @@ using System.Threading.Tasks;
 using School3.Service;
 using School3.Models;
 using School3.Models.Dto;
+using AutoMapper;
 
 namespace School3.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class ClassGroupController : ControllerBase
     {
+        private readonly IMapper _mapper;
+
+        public ClassGroupController(IMapper mapper)
+        {
+            //UserRepository = new UserRepository();
+            this._mapper = mapper;
+        }
+
         [HttpGet]
         public IEnumerable<ClassGroupDetailDto> GetAllClassGroups()
         {
-            ClassGroupService classGroupService = new ClassGroupService();
+            ClassGroupService classGroupService = new ClassGroupService(_mapper);
             return classGroupService.ReadAll();
         }
 
@@ -26,7 +36,7 @@ namespace School3.Controllers
         {
             string message = "Successful Registration";
 
-            ClassGroupService classGroupService = new ClassGroupService();
+            ClassGroupService classGroupService = new ClassGroupService(_mapper);
             classGroupService.Create(classGroupDetailDto);
 
             return message;
@@ -37,7 +47,7 @@ namespace School3.Controllers
         {
             string message = "Successful Update";
 
-            ClassGroupService classGroupService = new ClassGroupService();
+            ClassGroupService classGroupService = new ClassGroupService(_mapper);
             classGroupService.Update(classGroupDetailDto);
 
             return message;
@@ -48,7 +58,7 @@ namespace School3.Controllers
         {
             string message = "Successful Delection";
 
-            ClassGroupService classGroupService = new ClassGroupService();
+            ClassGroupService classGroupService = new ClassGroupService(_mapper);
             classGroupService.Delete(id);
 
             return message;
@@ -60,7 +70,7 @@ namespace School3.Controllers
         {
             string message = "Successfull merged. Please reassign unassigned teachers.";
 
-            ClassGroupService classGroupService = new ClassGroupService();
+            ClassGroupService classGroupService = new ClassGroupService(_mapper);
             classGroupService.Merge(mergedGroupsDto);
 
             return message;

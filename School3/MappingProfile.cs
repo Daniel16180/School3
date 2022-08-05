@@ -17,6 +17,8 @@ namespace School3
             //        .ForMember(um => um.Id, opt => opt.MapFrom(src => src.UserId));
 
             CreateMap<Teacher, TeacherDetailDto>(); //conversion from Teacher into TeacherDetailDto
+            CreateMap<ClassGroup, ClassGroupDetailDto>(); 
+            CreateMap<Pupil, PupilDetailDto>(); 
         }
 
     }

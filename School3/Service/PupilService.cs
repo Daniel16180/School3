@@ -8,11 +8,20 @@ using School3.Models.Dto;
 using Ubiety.Dns.Core;
 using System.Web.Http;
 using System.Linq;
+using AutoMapper;
 
 namespace School3.Service
 {
     public class PupilService
     {
+        private readonly IMapper _mapper;
+
+        public PupilService(IMapper mapper)
+        {
+            ClassGroupRepository classGroupRepository = new ClassGroupRepository();
+            _mapper = mapper;
+        }
+
         public void Create(Pupil pupil)
         {
             PupilRepository pupilRepository = new PupilRepository();
@@ -22,19 +31,9 @@ namespace School3.Service
         public IEnumerable<PupilDetailDto> ReadAll()
         {
             PupilRepository pupilRepository = new PupilRepository();
-            List<PupilDetailDto> pupilDetailDtos = new List<PupilDetailDto>();
-
-            foreach (var pupil in pupilRepository.GetPupils()) 
-            {
-                PupilDetailDto pupilDetailDto = new PupilDetailDto();
-                pupilDetailDto.Id = pupil.Id;
-                pupilDetailDto.Name = pupil.Name;
-                pupilDetailDto.Surname = pupil.Surname;
-                pupilDetailDto.Age = pupil.Age;
-                pupilDetailDto.ClassGroupId = pupil.ClassGroupId;
-
-                pupilDetailDtos.Add(pupilDetailDto);
-            }
+           
+            var pupils = pupilRepository.GetPupils();
+            var pupilDetailDtos = this._mapper.Map<IEnumerable<PupilDetailDto>>(pupils);
 
             return pupilDetailDtos;
         }

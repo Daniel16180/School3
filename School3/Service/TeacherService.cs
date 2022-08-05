@@ -28,7 +28,6 @@ namespace School3.Service
         public IEnumerable<TeacherDetailDto> ReadAll()
         {
             TeacherRepository teacherRepository = new TeacherRepository();
-            List<TeacherDetailDto> teacherDetailDtos = new List<TeacherDetailDto>();
 
             var teachers = teacherRepository.GetTeachers();
 

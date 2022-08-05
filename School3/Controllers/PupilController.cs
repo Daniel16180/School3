@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using School3.Service;
 using School3.Models;
 using School3.Models.Dto;
+using AutoMapper;
 
 namespace School3.Controllers
 {
@@ -14,11 +15,18 @@ namespace School3.Controllers
     [ApiController]
     public class PupilController : ControllerBase
     {
-        
-            [HttpGet]
+        private readonly IMapper _mapper;
+
+        public PupilController(IMapper mapper)
+        {
+            //UserRepository = new UserRepository();
+            this._mapper = mapper;
+        }
+
+        [HttpGet]
             public IEnumerable<PupilDetailDto> GetAllPupilss()
             {
-                PupilService pupilService = new PupilService();
+                PupilService pupilService = new PupilService(_mapper);
                 return pupilService.ReadAll();
             }
 
@@ -27,7 +35,7 @@ namespace School3.Controllers
         {
             string message = "Successful Registration";
 
-            PupilService pupilService = new PupilService();
+            PupilService pupilService = new PupilService(_mapper);
             pupilService.Create(pupil);
 
             return message;
@@ -38,7 +46,7 @@ namespace School3.Controllers
         {
             string message = "Successful Update";
 
-            PupilService pupilService = new PupilService();
+            PupilService pupilService = new PupilService(_mapper);
             pupilService.Update(pupilShortDto);
 
             return message;
@@ -50,7 +58,7 @@ namespace School3.Controllers
         {
             string message = "Successful Delection";
 
-            PupilService pupilService = new PupilService();
+            PupilService pupilService = new PupilService(_mapper);
             pupilService.Delete(id);
 
             return message;
@@ -61,7 +69,7 @@ namespace School3.Controllers
         public IEnumerable<Person2Dto> FindMates(PupilFindMatesDto findMatesDto)
         {
 
-            PupilService pupilService = new PupilService(); 
+            PupilService pupilService = new PupilService(_mapper); 
 
             return pupilService.FindMates(findMatesDto);
         }
@@ -71,7 +79,7 @@ namespace School3.Controllers
         public IEnumerable<PersonDto> FindMyTeachers(int pupilId)
         {
 
-            PupilService pupilService = new PupilService();
+            PupilService pupilService = new PupilService(_mapper);
 
             return pupilService.FindMyTeachers(pupilId);
         }

@@ -5,11 +5,20 @@ using System.Threading.Tasks;
 using School3.Repository;
 using School3.Models;
 using School3.Models.Dto;
+using AutoMapper;
 
 namespace School3.Service
 {
     public class ClassGroupService
     {
+        private readonly IMapper _mapper;
+
+        public ClassGroupService(IMapper mapper)
+        {
+            ClassGroupRepository classGroupRepository = new ClassGroupRepository();
+            _mapper = mapper;
+        }
+
         public void Create(ClassGroupDetailDto classGroupDetailDto)
         {
             ClassGroupRepository classGroupRepository = new ClassGroupRepository();
@@ -19,18 +28,9 @@ namespace School3.Service
         public IEnumerable<ClassGroupDetailDto> ReadAll()
         {
             ClassGroupRepository classGroupRepository = new ClassGroupRepository();
-            
-            List<ClassGroupDetailDto> classGroupDetailDtos = new List<ClassGroupDetailDto>();
 
-            foreach (var classGroup in classGroupRepository.GetClassgroups())
-            {
-                ClassGroupDetailDto classGroupDetailDto = new ClassGroupDetailDto();
-                classGroupDetailDto.Id = classGroup.Id;
-                classGroupDetailDto.Year = classGroup.Year;
-                classGroupDetailDto.Letter = classGroup.Letter;
-
-                classGroupDetailDtos.Add(classGroupDetailDto);
-            }
+            var classGroups = classGroupRepository.GetClassgroups();
+            var classGroupDetailDtos = this._mapper.Map<IEnumerable<ClassGroupDetailDto>>(classGroups); 
 
             return classGroupDetailDtos;
         }
